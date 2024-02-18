@@ -126,7 +126,7 @@ flights %>%
 3.  **Question 3 (10 points)** - Consider only flights that have non-missing arrival delay information.
     Your answer should include the name of the carrier in addition to the carrier code and the values asked.
     
-```{R}
+
     flights %>%
   filter(!is.na(arr_delay)) %>%
   group_by(carrier) %>%
@@ -134,7 +134,7 @@ flights %>%
   arrange(desc(mean_arr_delay)) %>%
   inner_join(airlines, by = "carrier") %>%
   slice(c(1, n()))
-```
+
     a\.
     Which carrier had the highest mean arrival delay?
 Fronteir Airlines inc with 21.9 minutes
@@ -144,12 +144,12 @@ Alaska Airlines with 9.93 minutes early
 
 4.  **Question 4 (10 points)** - What was the mean temperature at the origin airport on the day with the highest departure delay?
 
-```{R}
+
 flights %>%
   arrange(desc(dep_delay)) %>%
   slice(1) %>%
   select(dep_delay, month, day, origin)
-```
+
 
 The highest departure delay was a flight on Jan 9 departing from JFK.
 
@@ -159,19 +159,18 @@ The highest departure delay was a flight on Jan 9 departing from JFK.
 
     a\.
     Calculate the proportion of flights that are delayed at departure at each of these time intervals.
-```{R}
+
 flights <- flights %>%
   mutate(time_of_day = case_when(
     sched_dep_time >= 001  & sched_dep_time <= 600  ~ "12:01am-6am",
     sched_dep_time >= 601  & sched_dep_time <= 1200 ~ "6:01am-12pm",
     sched_dep_time >= 1201 & sched_dep_time <= 1800 ~ "12:01pm-6pm",
     sched_dep_time >= 1801                          ~ "6:01pm-12am"
-  ))
-```
+))
 ***21% of flights are delayed between midnight and 6 am, 26% are delayed between 6am and noon, 52% are delayed between 6pm and midnight.***
     b\.
     Comment on how the likelihood of being delayed change throughout the day?
-    ```{R}
+   
     flights %>%
   filter(!is.na(dep_delay)) %>%
   mutate(dep_delayed = ifelse(dep_delay > 0, "delayed", "ontime")) %>%
@@ -181,12 +180,12 @@ flights <- flights %>%
   filter(dep_delayed == "delayed") %>%
   arrange(prop_delayed)
     
-    ```
+  
     
 ***As the day goes by, you are less likely to be delayed.***
 6.  **Question 6 (15 points)** - Find the flight with the longest air time.
 
-```{R}
+
 flights %>%
   arrange(desc(air_time)) %>%
   slice(1) %>%
@@ -194,7 +193,7 @@ flights %>%
   inner_join(planes, by = "tailnum") %>%
   select(air_time, dest, tailnum, seats)
 
-```
+
     a\.
     How long is this flight?
 
@@ -213,7 +212,7 @@ Honolulu.
     What does this tell you about the geographical distribution of these airports?
     *Hint:* You will first need to limit your analysis to the Contiguous United States.
     [This Wikipedia article](https://en.wikipedia.org/wiki/List_of_extreme_points_of_the_United_States) can help, but you're welcomed to use other resources as well.
-  ```{R}
+
   airports %>%
   filter(
     lat > 24.520833333333332 & lat < 49.38447222222222,
@@ -221,7 +220,7 @@ Honolulu.
   ) %>%
   ggplot(aes(x = lon)) +
     geom_histogram(binwidth = 5)
-    ```
+
   
   
     Make sure to cite whatever resource you use.
